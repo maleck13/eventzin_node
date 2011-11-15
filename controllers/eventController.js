@@ -20,33 +20,49 @@ var EventController= {
         if(event && req.params.id){
             event.findOne({
                 _id:req.params.id
-                },function(err,data){
-                    if(data){
-                        console.log("showing event");
-                        (req.params.type == "json")
-                        ?res.send(data)
-                        :res.render("show",{title:data.title,post:data});
-                    }else{
-                        res.send("error",404)
-                    }
-                ; 
+            },function(err,data){
+                if(data){
+                    console.log("showing event");
+                    (req.params.type == "json")
+                    ?res.send(data)
+                    :res.render("show",{
+                        title:data.title,
+                        post:data
+                    });
+                }else{
+                    res.send("error",404)
+                }
+            ; 
             });
         }
     },
     list:function(req,res){
         
         if(event){
-            event.findAllByEndDateLessThan(new Date(),function(err,data){
-                console.log(data[0]);
-                if(req.params.type == "json")
-                    res.send(data);
-                else{
-                    res.render("list",{
-                        posts:data,
-                        title:"events"
-                    });
-                }
-            })
+            if(! req.params.county){
+                event.findAllByEndDateLessThan(new Date(),function(err,data){
+                    console.log(data[0]);
+                    if(req.params.type == "json")
+                        res.send(data);
+                    else{
+                        res.render("list",{
+                            posts:data,
+                            title:"events"
+                        });
+                    }
+                })
+            }else{
+                event.findAllByCountyAndEndDate(req.params.county, new Date,function(err,data){
+                    if(req.params.type == "json")
+                        res.send(data);
+                    else{
+                        res.render("list",{
+                            posts:data,
+                            title:"events"
+                        });
+                    }
+                });
+            }
         }else{
             res.send("no data");
         }
@@ -76,7 +92,7 @@ var EventController= {
             toSave.save(function(err,suc){
                 if(suc){
                     console.log(suc);
-                    res.send("done");
+                    res.redirect("/"+toSave.county+"/event/list", 301);
                 }else{
                     console.log("failed "+err);
                 }
@@ -87,7 +103,7 @@ var EventController= {
         if(req.params.id && event){
             event.remove({
                 _id:req.params.id
-                },function(err,suc){
+            },function(err,suc){
                 if(suc){
                     res.redirect("/event/list", 200);
                 }else{
@@ -98,6 +114,8 @@ var EventController= {
             res.send("could not delete no id");  
         }
     }
+    
+    
 };
 
 

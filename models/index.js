@@ -62,6 +62,10 @@ Event.statics.findAllByEndDateLessThan = function(date,callback){
     return this.find().where("enddate").gte(date).run(callback)
 }
 
+Event.statics.findAllByCountyAndEndDate = function(county,end,callback){
+    return this.find().where("enddate").gte(end).where("county", county).run(callback);
+}
+
 /*county model*/
 
 var County = new Schema({
