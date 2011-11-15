@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-
+require.paths.unshift('./node_modules');
 var express     = require('express')
   , routes      = require('./routes')
   , db          = require("./models").db;
@@ -57,6 +57,6 @@ app.get("/event/delete/:id",eventController.deleteEvent);
 
 
 
-
-app.listen(3000);
+var port = (process.env.VMC_APP_PORT || 3000);
+app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
