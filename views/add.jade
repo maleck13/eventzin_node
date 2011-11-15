@@ -1,0 +1,20 @@
+form(method="post")
+  fieldset
+    p
+    legend Add Event
+    legend Event Title:
+    p
+      input(name="title",placeholder="event title",width=200)
+    legend Event Body:
+    p
+      textarea(cols=40,rows=10, name="content", value="")
+    
+    p
+    legend Location:
+    select(name="county")
+       option(value="36.3432434,-4.5435345,dublin") Dublin
+       option(value="53.234324,-7.34234,waterford") Waterford
+       option(value="47.3423423,-5.23423",cork") Cork
+    
+  p.buttons
+    input(type="submit", value="Save")

@@ -1,0 +1,5 @@
+ul
+   - each post,_id in posts
+      li 
+        a(href="/event/show/"+post._id+")!= post.title 
+        a(href="/event/delete/"+post._id+")   ~ delete

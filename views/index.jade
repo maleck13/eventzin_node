@@ -1,0 +1,7 @@
+h1= title
+p Welcome to #{title}
+p
+    ul
+    - each county, _id in counties
+        li
+            a(href=county.county+"/event/list") view events
