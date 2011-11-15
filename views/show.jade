@@ -5,11 +5,13 @@ div(id="wrapper")
        div(id="nav")
             a(href="/") Home
             a(href="/event/add") add event
-            a(href="/event/list") view events
+            a(href="/event/list") events
      div(class="clear")
      div(id="headline")
        h2 Latest Events
      div(id="body")
         h3= post.title
+        h5= "Starts: "+post.startdate
+        h5= "Ends:   "+post.enddate
         p=  post.content
   

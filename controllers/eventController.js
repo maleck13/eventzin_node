@@ -85,8 +85,8 @@ var EventController= {
             var toSave = new event();
             toSave.title = req.body.title;
             toSave.content = req.body.content;
-            toSave.startdate = new Date();
-            toSave.enddate  = new Date("December 25, 2011");
+            toSave.startdate = new Date(req.body.startdate);
+            toSave.enddate  = new Date(req.body.enddate);
             toSave.county = county;
             toSave.longlat = longLat;
             toSave.save(function(err,suc){
@@ -105,7 +105,7 @@ var EventController= {
                 _id:req.params.id
             },function(err,suc){
                 if(suc){
-                    res.redirect("/event/list", 200);
+                    res.redirect("/event/list", 301);
                 }else{
                     res.send("could not delete");
                 }

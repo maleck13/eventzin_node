@@ -5,7 +5,7 @@ div(id="wrapper")
        div(id="nav")
             a(href="/") Home
             a(href="/event/add") add event
-            a(href="/event/list") view event
+            a(href="/event/list") events
      div(class="clear")
      div(id="headline")
        h2 Add An Event
@@ -29,7 +29,13 @@ div(id="wrapper")
             select(name="county")
                option(value="36.3432434,-4.5435345,dublin") Dublin
                option(value="53.234324,-7.34234,waterford") Waterford
-               option(value="47.3423423,-5.23423",cork") Cork
+               option(value="47.3423423,-5.23423,"cork") Cork
+            p
+            legend Start Date
+            input(type="text", name="startdate", class="date", placeholder="add start date")
+            p
+            legend End Date
+            input(type="text", name="enddate", class="date", placeholder="add end date")
 
           p.buttons
             input(type="submit", value="Save")
