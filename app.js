@@ -38,7 +38,7 @@ app.configure('production', function(){
 //controllers
 
 var eventController = require("./controllers/eventController").EventController;
-var userController  =   require("./controllers/UserController").UserController;
+var UserController  =   require("./controllers/UserController").UserController;
 
  
 
