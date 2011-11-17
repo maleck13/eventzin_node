@@ -27,8 +27,22 @@ var generate_mongo_url = function(obj){
 }
 
 
+/** User Model **/
+
+var User = new Schema(
+{
+    username    :   {type:String, index: true},
+    password    :   {type:String},
+    email       :   {type:String, index:true},
+    facebook    :   {type:String},
+    twitter     :   {type:String}
+    }
+);
 
 
+User.statics.findByUsername = function(uname,callback){
+  return this.findOne({username:uname},callback);  
+};
   
 /event model/
 
@@ -65,14 +79,6 @@ Event.statics.findAllByEndDateLessThan = function(date,callback){
 Event.statics.findAllByCountyAndEndDate = function(county,end,callback){
     return this.find().where("enddate").gte(end).where("county", county).run(callback);
 }
-
-/*User model*/
-
-var User = new Schema({
-    username    :   {type:String,index:true},
-    password    :   {type:String},
-    email       :   {type:String}
-});
 
 /*county model*/
 
