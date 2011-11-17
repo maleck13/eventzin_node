@@ -56,7 +56,8 @@ app.get("/event/show/:id/:type",eventController.show);
 app.get("/event/add",eventController.addEvent);
 app.post("/event/add",eventController.saveEvent);
 app.get("/event/delete/:id",eventController.deleteEvent);
-app.get("/user/register",UserController.registerAction);
+app.all("/user/register",UserController.registerAction);
+
 
 
 var port = (process.env.VMC_APP_PORT || 3000);

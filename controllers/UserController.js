@@ -1,8 +1,10 @@
 var UserController = {
     
     registerAction  :   function(req,res){
-        if(req.header("method") == "post"){
+        console.log(req.method);
+        if(req.method == "POST"){
             console.log("post");
+            res.send(req.body);
         }else{
             res.render("user/register",{title:"register account"});
         }
