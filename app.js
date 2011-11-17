@@ -38,7 +38,7 @@ app.configure('production', function(){
 //controllers
 
 var eventController = require("./controllers/eventController").EventController;
-
+var userController  =   require("./controllers/UserController").UserController;
 
  
 
@@ -56,7 +56,7 @@ app.get("/event/show/:id/:type",eventController.show);
 app.get("/event/add",eventController.addEvent);
 app.post("/event/add",eventController.saveEvent);
 app.get("/event/delete/:id",eventController.deleteEvent);
-
+app.get("/user/register",UserController.register);
 
 
 var port = (process.env.VMC_APP_PORT || 3000);
