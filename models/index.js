@@ -68,6 +68,12 @@ Event.statics.findAllByCountyAndEndDate = function(county,end,callback){
 
 /*User model*/
 
+var User = new Schema({
+    username    :   {type:String,index:true},
+    password    :   {type:String},
+    email       :   {type:String}
+});
+
 /*county model*/
 
 var County = new Schema({
