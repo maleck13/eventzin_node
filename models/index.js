@@ -41,9 +41,13 @@ var User = new Schema(
 
 
 User.statics.findByUsername = function(uname,callback){
-  return this.findOne({username:uname},callback);  
+  return this.findOne().where("username", uname).run(callback);  
 };
   
+  
+User.statics.findByEmail=function(emailAddress, callback){
+  return this.findOne().where("email",emailAddress).run(callback);  
+};  
 /event model/
 
 var Event = new Schema({
@@ -95,5 +99,6 @@ County.statics.findByLongLat = function(longlat,callback){
 
 mongoose.model('Event', Event);
 mongoose.model("County",County);
+mongoose.model("User",User);
 
 exports.db = mongoose;

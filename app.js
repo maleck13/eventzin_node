@@ -57,6 +57,7 @@ app.get("/event/add",eventController.addEvent);
 app.post("/event/add",eventController.saveEvent);
 app.get("/event/delete/:id",eventController.deleteEvent);
 app.all("/user/register",UserController.registerAction);
+app.post("/user/checkUsername",UserController.checkUsername);
 
 
 
