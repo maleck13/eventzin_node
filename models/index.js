@@ -1,23 +1,23 @@
 var mongoose = require('mongoose')
-  , Schema = mongoose.Schema
-  , db   = null;
+, Schema = mongoose.Schema
+, db   = null;
   
   
  
 var generate_mongo_url = function(obj){
-  obj.hostname = (obj.hostname || 'localhost');
-  obj.port = (obj.port || 27017);
-  obj.db = (obj.db || 'test');
+    obj.hostname = (obj.hostname || 'localhost');
+    obj.port = (obj.port || 27017);
+    obj.db = (obj.db || 'test');
 
-  if(obj.username && obj.password){
-    return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
-  }
-  else{
-    return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
-  }
+    if(obj.username && obj.password){
+        return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
+    }
+    else{
+        return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
+    }
 };
 
- if(process.env.VCAP_SERVICES){
+if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
     var mongo = env['mongodb-1.8'][0]['credentials'];
     var mongourl = generate_mongo_url(mongo);
@@ -27,78 +27,11 @@ var generate_mongo_url = function(obj){
 }
 
 
-/** User Model **/
-
-var User = new Schema(
-{
-    username    :   {type:String, index: true},
-    password    :   {type:String},
-    email       :   {type:String, index:true},
-    facebook    :   {type:String},
-    twitter     :   {type:String}
-    }
-);
-
-
-User.statics.findByUsername = function(uname,callback){
-  return this.findOne().where("username", uname).run(callback);  
-};
-  
-  
-User.statics.findByEmail=function(emailAddress, callback){
-  return this.findOne().where("email",emailAddress).run(callback);  
-};  
-/event model/
-
-var Event = new Schema({
-    title     : {type: String, index: true}
-  , content   : {type: String}
-  , startdate : Date
-  , enddate   : Date
-  , creator   : Schema.ObjectId
-  , longlat   : {lon:Number,lat:Number}
-  , county    : {type:String, index:true}
-  
-});
-  
-
-Event.statics.findByTitle = function (title, callback) {
-  return this.find({title: title}, callback);
-}
-
-
-Event.statics.deleteAllByTitle = function(title,callback){
-    return this.remove({title:title},callback);
-}
-
-
-Event.statics.findOneByExample= function(ex,callback){
-    return this.findOne(ex,callback);
-}
-
-Event.statics.findAllByEndDateLessThan = function(date,callback){
-    return this.find().where("enddate").gte(date).run(callback)
-}
-
-Event.statics.findAllByCountyAndEndDate = function(county,end,callback){
-    return this.find().where("enddate").gte(end).where("county", county).run(callback);
-}
-
-/*county model*/
-
-var County = new Schema({
-    county      :   {type:String,index:true}
-    ,longlat    :   {lon:Number,lat:Number}
-});
-
-County.statics.findByLongLat = function(longlat,callback){
-    return this.find().where("longlat.lon").eq(longlat.lon).where("longlat.lat", longlat.lat).run(callback);
-}
 
 
 
-mongoose.model('Event', Event);
-mongoose.model("County",County);
-mongoose.model("User",User);
+mongoose.model('Event', require("./Event"));
+mongoose.model("County",require("./County"));
+mongoose.model("User",require("./User"));
 
 exports.db = mongoose;

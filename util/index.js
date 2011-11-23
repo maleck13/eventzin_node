@@ -9,6 +9,14 @@ Array.prototype.each = function(callback){
   return this;  
 };
 
+String.prototype.contains = function(token){
+    console.log("contains called with "+ typeof token);
+    if("string" !== typeof token)
+        return false;
+    
+    return (token.indexOf(token)!= -1);
+}
+
 
 
 

@@ -10,8 +10,8 @@ div(id="wrapper")
      div(id="headline")
        h2 Add An Event
      div(id="body")
-        form(method="post", name="register")
-                  fieldset
+        form(method="POST",action="/user/login")
+            fieldset
                     p
                     legend Register:
                     p
@@ -20,11 +20,7 @@ div(id="wrapper")
                       span(class="hidden red", id="username_error")
                     p
                     legend password :
-                        input(name="password",placeholder="add a password",width=200, type="password")
+                        input(name="password",placeholder=" password",width=200, type="password")
                         span(class="hidden red", id="email_error")
                     p
-                    legend email addr:
-                        input(name="email",placeholder="add a email address",width=200, type="text")
-                    
-                    p.buttons
-                    input(type="submit", value="Register")
+                        input(type="submit",value="signin")

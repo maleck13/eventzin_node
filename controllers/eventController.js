@@ -31,8 +31,7 @@ var EventController= {
                     });
                 }else{
                     res.send("error",404)
-                }
-            ; 
+                } 
             });
         }
     },

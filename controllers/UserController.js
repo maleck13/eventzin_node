@@ -8,8 +8,12 @@ var UserController = {
     
     registerAction  :   function(req,res){
         console.log(req.method);
+        var errors = [];
         if(req.method == "POST"){
             console.log("post");
+            if(! req.body.email.contains("@")){
+                res.redirect("/user/register", 301)
+            }
             var saveUser = new user();
             saveUser.username = req.body.username;
             saveUser.password = req.body.password;
@@ -18,11 +22,26 @@ var UserController = {
             saveUser.save();
             res.send("saved");
         }else{
-            res.render("user/register",{title:"register account"});
+            res.render("user/register",{title:"register account",'errors':errors});
         }
     },
+    
     loginAction     :   function(req,res){
-        
+      if(req.body.username && req.body.password){
+          user.findByUsername(req.body.username,function(err,data){
+              console.log(data);
+              if(data.password == req.body.password){
+                  console.log("passsword = "+ data.password + "sent = "+req.body.password);
+                  req.session.loggedin = true;
+                  res.redirect("/", 301);
+              }else{
+                  console.log("password wrong");
+                  res.render("user/login",{title:"sign in",errors:[]});
+              }
+          });
+      }else{
+          res.render("user/login",{title:"sign in"});
+      }  
     },
     signoutAction   :   function(req,res){
         
@@ -48,7 +67,13 @@ var UserController = {
     
     checkEmail : function(req,res){
         if(req.body.email){
-            
+            user.findByEmail(req.body.email,function(err,data){
+                if(!err && ! data){
+                    res.send({available:true});
+                }else{
+                    res.send({available:false});
+                }
+            });
         }else{
             res.send("");
         }

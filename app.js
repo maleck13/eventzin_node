@@ -5,7 +5,8 @@
 require.paths.unshift('./node_modules');
 var express     = require('express')
   , routes      = require('./routes')
-  , db          = require("./models").db;
+  , db          = require("./models").db
+  , MemoryStore = require('express/node_modules/connect').session.MemoryStore;
 
 /*
 var county =  db.models.County;
@@ -15,6 +16,8 @@ county.save();
 
 var app = module.exports = express.createServer();
 
+
+
 // Configuration
 
 app.configure(function(){
@@ -22,6 +25,8 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+   app.use(express.cookieParser());
+  app.use(express.session({ secret: "blahblah", store: new MemoryStore({ reapInterval:  60000 * 10 })}));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -37,7 +42,7 @@ app.configure('production', function(){
 
 //controllers
 
-var eventController = require("./controllers/eventController").EventController;
+var eventController = require("./controllers/EventController").EventController;
 var UserController  =   require("./controllers/UserController").userController;
 
  
@@ -58,6 +63,8 @@ app.post("/event/add",eventController.saveEvent);
 app.get("/event/delete/:id",eventController.deleteEvent);
 app.all("/user/register",UserController.registerAction);
 app.post("/user/checkUsername",UserController.checkUsername);
+app.post("/user/checkEmail",UserController.checkEmail);
+app.all("/user/login",UserController.loginAction);
 
 
 
