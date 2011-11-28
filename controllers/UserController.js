@@ -18,6 +18,7 @@ var UserController = {
             saveUser.username = req.body.username;
             saveUser.password = req.body.password;
             saveUser.email = req.body.email;
+            saveUser.role = "member";
             console.log(saveUser);
             saveUser.save();
             res.send("saved");
@@ -29,10 +30,12 @@ var UserController = {
     loginAction     :   function(req,res){
       if(req.body.username && req.body.password){
           user.findByUsername(req.body.username,function(err,data){
+              
               console.log(data);
               if(data.password == req.body.password){
                   console.log("passsword = "+ data.password + "sent = "+req.body.password);
                   req.session.loggedin = true;
+                  req.session.user = data;
                   res.redirect("/", 301);
               }else{
                   console.log("password wrong");
@@ -82,4 +85,4 @@ var UserController = {
     
 };
 
-exports.userController = UserController;
+module.exports = UserController;

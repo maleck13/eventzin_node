@@ -1,42 +1,39 @@
 var  db  = require("../models").db;
-
 require("../util");  
-
 var event = db.models.Event;
-
-var expressAuth  = require('express').basicAuth;
 
 
 var EventController= {
     
     addEvent:function(req,res){
-        
-        res.render("add",{
-            title:"Add Event"
-        });
+        if(req.session.user){
+          res.render("add",{
+              title:"Add Event"
+          });
+        }else{
+          res.redirect("/user/login");
+        }
         
     },
     show:function(req,res){
         if(event && req.params.id){
-            event.findOne({
-                _id:req.params.id
-            },function(err,data){
+            event.findOne({_id:req.params.id},
+            function(err,data){
                 if(data){
-                    console.log("showing event");
+                    
                     (req.params.type == "json")
                     ?res.send(data)
                     :res.render("show",{
                         title:data.title,
                         post:data
-                    });
-                }else{
+                });
+          }else{
                     res.send("error",404)
                 } 
             });
         }
     },
-    list:function(req,res){
-        
+    list:function(req,res){    
         if(event){
             if(! req.params.county){
                 event.findAllByEndDateLessThan(new Date(),function(err,data){
@@ -118,4 +115,5 @@ var EventController= {
 };
 
 
-exports.EventController = EventController;
+module.exports =  EventController;
+

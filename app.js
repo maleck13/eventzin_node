@@ -4,17 +4,12 @@
  */
 require.paths.unshift('./node_modules');
 var express     = require('express')
-  , routes      = require('./routes')
   , db          = require("./models").db
   , MemoryStore = require('express/node_modules/connect').session.MemoryStore;
 
-/*
-var county =  db.models.County;
-var county = new county({county:"waterford",longlat:{lon:53.2323,lat:-7.234234}})
-county.save();
-*/
 
 var app = module.exports = express.createServer();
+
 
 
 
@@ -42,29 +37,26 @@ app.configure('production', function(){
 
 //controllers
 
-var eventController = require("./controllers/EventController").EventController;
-var UserController  =   require("./controllers/UserController").userController;
-
+var Controllers = require("./controllers");
  
+// Index Home Page Route
 
+app.get('/', Controllers.IndexController.indexAction);
 
-// Routes
+//Events Routes
+app.get("/:county/event/list", Controllers.EventController.list);
+app.get("/:county/event/list/:type", Controllers.EventController.list);
+app.get("/:county/event/show/:id",Controllers.EventController.show);
+app.get("/:county/event/show/:id/:type",Controllers.EventController.show);
+app.get("/event/add",Controllers.EventController.addEvent);
+app.post("/event/add",Controllers.EventController.saveEvent);
+app.get("/event/delete/:id",Controllers.EventController.deleteEvent);
 
-
-app.get('/', require("./controllers/IndexController").index.indexAction);
-app.get("/:county/event/list", eventController.list);
-app.get("/:county/event/list/:type", eventController.list);
-app.get("/event/list/:type", eventController.list);
-app.get("/event/list", eventController.list);
-app.get("/:county/event/show/:id",eventController.show);
-app.get("/event/show/:id/:type",eventController.show);
-app.get("/event/add",eventController.addEvent);
-app.post("/event/add",eventController.saveEvent);
-app.get("/event/delete/:id",eventController.deleteEvent);
-app.all("/user/register",UserController.registerAction);
-app.post("/user/checkUsername",UserController.checkUsername);
-app.post("/user/checkEmail",UserController.checkEmail);
-app.all("/user/login",UserController.loginAction);
+// User Routes
+app.all("/user/register",Controllers.UserController.registerAction);
+app.post("/user/checkUsername",Controllers.UserController.checkUsername);
+app.post("/user/checkEmail",Controllers.UserController.checkEmail);
+app.all("/user/login",Controllers.UserController.loginAction);
 
 
 

@@ -6,6 +6,10 @@ div(id="wrapper")
             a(href="/") Home
             a(href="/event/add") add event
             a(href="/event/list") events
+            -if(user)
+                a(href="/user/logout") logout
+            -else
+                a(href="/user/login") login
      div(class="clear")
      div(id="headline")
        h2 Eventzin A Social Event Discovery App
