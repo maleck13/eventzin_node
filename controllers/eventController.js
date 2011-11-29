@@ -2,14 +2,15 @@ var  db  = require("../models").db;
 require("../util");  
 var event = db.models.Event;
 
-
 var EventController= {
     
     addEvent:function(req,res){
         if(req.session.user){
-          res.render("add",{
-              title:"Add Event"
-          });
+        var model = {};
+        model.title = "Add Event";
+        model.form = req.session.form || null;
+        req.session.form = null;
+          res.render("add",model);
         }else{
           res.redirect("/user/login");
         }
@@ -67,30 +68,26 @@ var EventController= {
         
         if(event){
             var longLat = {};
-            var longlat = req.body.county;
-            var county = null;
-            if(typeof longlat == "string"){
-                longlat = longlat.split(",");
-                console.log("longlat length "+ longlat.length);
-                if(longlat.length == 3){
-                    longLat.lat = longlat[0];
-                    longLat.lon = longlat[1];
-                    county = longlat[2];
-                }
-            }
             var toSave = new event();
-            toSave.title = req.body.title;
-            toSave.content = req.body.content;
-            toSave.startdate = new Date(req.body.startdate);
-            toSave.enddate  = new Date(req.body.enddate);
-            toSave.county = county;
+            var countySplit = req.body.county.split(",");
+            longLat.lat = req.body.latitude || countySplit[0];
+            longLat.lon = req.body.longitude || countySplit[1]; 
             toSave.longlat = longLat;
+            toSave.title = req.body.title;
+            toSave.county = countySplit[2];
+            toSave.startdate = req.body.startdate;
+            toSave.enddate = req.body.enddate;
+            toSave.content = req.body.content;
+            toSave.venue = req.body.venue || "";
+            var that = this;
             toSave.save(function(err,suc){
                 if(suc){
-                    console.log(suc);
                     res.redirect("/"+toSave.county+"/event/list", 301);
                 }else{
-                    console.log("failed "+err);
+                      toSave.errors = err.errors;
+                      eventForm = toSave;
+                      req.session.form = toSave;
+                      res.redirect("/event/add",301);
                 }
             });
         }

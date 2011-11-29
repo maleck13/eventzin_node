@@ -13,7 +13,27 @@ var Event = new Schema({
   , county    : {type:String, index:true}
   
 });
+
+/*
+
+*/
   
+Event.pre('save',function(next){
+  
+  var errors = [];
+  console.log("I was called first before save");
+  if(this.title.length < 20)
+    errors[errors.length] = {field:"title",message:"title invalid"};
+  
+  if(errors.length > 0){
+      var error = new Error("Invalid Input");
+      error.errors = errors;
+      next(error);
+   }
+   next();
+   
+});
+
 
 Event.statics.findByTitle = function (title, callback) {
   return this.find({title: title}, callback);

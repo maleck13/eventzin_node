@@ -11,8 +11,9 @@ div(id="wrapper")
        h2 Add An Event
      div(id="body")
       div(id="body-left")
+        - if(form)
+           there were errors
         p Add Your Event Here
-      div(id="body-right")
         form(method="post")
           fieldset
             p
@@ -20,6 +21,9 @@ div(id="wrapper")
             legend Event Title:
             p
               input(name="title",placeholder="event title",width=200)
+            legend Venue:  
+            p
+            input(name="venue",placeholder="add a venue name")  
             legend Event Body:
             p
               textarea(cols=40,rows=10, name="content", value="")
@@ -28,9 +32,11 @@ div(id="wrapper")
             p
             legend Location:
             select(name="county")
-               option(value="36.3432434,-4.5435345,dublin") Dublin
-               option(value="53.234324,-7.34234,waterford") Waterford
-               option(value="47.3423423,-5.23423,cork") Cork
+               option(value="53.34156,-6.257347,dublin") Dublin
+               option(value="52.25227,-7.127206,waterford") Waterford
+               option(value="51.8978719,-8.4710874,cork") Cork
+            input(name="longitude", type="hidden")
+            input(name="latitude", type="hidden")   
             p
             legend Start Date
             input(type="text", name="startdate", class="date", placeholder="add start date")
@@ -40,3 +46,5 @@ div(id="wrapper")
 
           p.buttons
             input(type="submit", value="Save")
+      div(id="body-right")
+        

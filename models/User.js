@@ -9,7 +9,9 @@ var User = new Schema(
     email       :   {type:String, index:true},
     facebook    :   {type:String},
     twitter     :   {type:String},
-    role        :   {type:String}
+    role        :   {type:String},
+    location	:	{x:Number,y:Number},
+    county		:	{type:String},
     }
 );
 
