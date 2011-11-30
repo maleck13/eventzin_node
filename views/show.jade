@@ -8,10 +8,15 @@ div(id="wrapper")
             a(href="/event/list") events
      div(class="clear")
      div(id="headline")
-       h2 Latest Events
      div(id="body")
-        h3= post.title
+        h2= post.title
+        - if(owner != "undefined")
+          h5="Added By: "+owner.username
         h5= "Starts: "+post.startdate
         h5= "Ends:   "+post.enddate
+        - if(post.venue != null && post.venue !="undefinded")
+            h5= "Venue: "+post.venue
         p=  post.content
-  
+        div(id="map")
+        input(type="hidden", value=post.longlat.lat, name="latitude")
+        input(type="hidden",value=post.longlat.lon, name="longitude")

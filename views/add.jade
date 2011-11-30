@@ -11,8 +11,12 @@ div(id="wrapper")
        h2 Add An Event
      div(id="body")
       div(id="body-left")
-        - if(form)
-           there were errors
+        - if(typeof formmodel !="undefined")
+            ul
+            - each error in formErrors
+                li
+                  span="the field:"+ error.field+ " is invalid "+ error.message
+           
         p Add Your Event Here
         form(method="post")
           fieldset
